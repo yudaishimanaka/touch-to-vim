@@ -84,5 +84,8 @@ while True:
             if mother_state == 0:
                 device.emit_click(key)
             else:
-                device2.emit_click(MOTHER_KEYS[mother_state])
-                device.emit_click(key)
+                if key == KEY_MAPPING[0]:
+                    device.emit_click(key)
+                else:
+                    device2.emit_click(MOTHER_KEYS[mother_state])
+                    device.emit_click(key)
