@@ -32,8 +32,8 @@ subprocess.check_call(['modprobe', 'uinput'])
 
 device = uinput.Device(KEY_MAPPING.values())
 
-cap = MPR121.MPR121()
-if not cap.begin():
+mpr121 = MPR121.MPR121()
+if not mpr121.begin(0x5A):
     print('Faild to initializing MPR121!!')
     sys.exit(1)
 
@@ -42,7 +42,7 @@ GPIO.setup(IRQ_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(IRQ_PIN, GPIO.FALLING)
 atexit.register(GPIO.cleanup)
 
-cap.touched()
+mpr121.touched()
 
 print('Press Ctrl-C to quit.')
 while True:
@@ -50,7 +50,7 @@ while True:
     while (time.time() - start) < MAX_EVENT_WAIT and not GPIO.event_detected(IRQ_PIN):
         time.sleep(EVENT_WAIT_SLEEP)
 
-    touched = cap.touched()
+    touched = mpr121.touched()
     for pin, key in KEY_MAPPING.iteritems():
         pin_bit = 1 << pin
         if touched & pin_bit:
