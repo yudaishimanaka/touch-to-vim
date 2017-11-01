@@ -76,8 +76,10 @@ while True:
             if pin_bit == 256:
                 if mother_state == 13:
                     mother_state = 0
+                    break
                 else:
                     mother_state += 1
+                    break
             
             if mother_state == 0:
                 device.emit_click(key)
